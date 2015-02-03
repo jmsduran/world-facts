@@ -85,11 +85,26 @@ $googlemapsHTML = ($population == $DATA_NOT_FOUND) ? '' : '<iframe
                     <?php echo $googlemapsHTML; ?>
                 </div>
             </div>
+             <div class="row">
+                <div class="col-md-4 col-md-offset-4">
+                </div>
+            </div>
             <div class="row">
                 <div class="col-md-4 col-md-offset-4">
-                    <p>Population: <?php echo $population; ?></p>
-                    <p>CO2 Emissions: <?php echo $co2emissions; ?></p>
-                    <p>Oil Production: <?php echo $oilproduction; ?></p>
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Facts:</h3>
+                        </div>
+                        <div class="panel-body">
+                            <p><b>Population:</b> <?php echo $population; ?> million.</p>
+                            <p><b>CO2 Emissions:</b> <?php echo $co2emissions; ?> million metric tons.</p>
+                            <p><b>Oil Production:</b> <?php echo $oilproduction; ?> thousand barrels per day.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+             <div class="row">
+                <div class="col-md-4 col-md-offset-4">
                 </div>
             </div>
         </div>
