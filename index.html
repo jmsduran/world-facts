@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>World Facts</title>
+        <script type="text/javascript" src="jquery-2.1.3/jquery.min.js"></script>
+        <script type="text/javascript" src="bootstrap-3.3.2/bootstrap.min.js"></script>
+        <link rel="stylesheet" href="bootstrap-3.3.2/bootstrap.min.css">
+        <link rel="stylesheet" href="bootstrap-3.3.2/bootstrap-theme.min.css">
+    </head>
+    <body>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-4 col-md-offset-4">
+                    <div class="jumbotron">
+                        <h1>World Facts</h1>
+                        <p>Type in a country to learn some interesting facts!</p>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4 col-md-offset-4">
+                    <form action="countries/" method="get">
+                        <div class="form-group">
+                            <input type="text" class="form-control input-lg" name="name" id="name" placeholder="Germany" />
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-lg btn-block">Go</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
