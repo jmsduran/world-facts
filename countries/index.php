@@ -55,6 +55,12 @@ $population = getValue($country, $popdata);
 $co2emissions = getValue($country, $co2data);
 $oilproduction = getValue($country, $oildata);
 
+$output = array(
+    array("key" => "Population", "value" => $population, "unit" => "million"),
+    array("key" => "CO2 Emissions", "value" => $co2emissions, "unit" => "million metric tons"),
+    array("key" => "Oil Production", "value" => $oilproduction, "unit" => "thousand barrels per day")
+);
+
 // Display some images from Panoramio that are tagged under the coutry
 // name, but only if population data exists (else do not show the iframe).
 $googlemapsHTML = ($population == $DATA_NOT_FOUND) ? '' : '<iframe
@@ -91,16 +97,25 @@ $googlemapsHTML = ($population == $DATA_NOT_FOUND) ? '' : '<iframe
             </div>
             <div class="row">
                 <div class="col-md-4 col-md-offset-4">
-                    <div class="panel panel-primary">
-                        <div class="panel-heading">
-                            <h3 class="panel-title">Facts:</h3>
-                        </div>
-                        <div class="panel-body">
-                            <p><b>Population:</b> <?php echo $population; ?> million.</p>
-                            <p><b>CO2 Emissions:</b> <?php echo $co2emissions; ?> million metric tons.</p>
-                            <p><b>Oil Production:</b> <?php echo $oilproduction; ?> thousand barrels per day.</p>
-                        </div>
-                    </div>
+                    <h2>Facts:</h2>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Metric</th>
+                                <th>Value</th>
+                                <th>Unit</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        <?php foreach ($output as $row) {?>
+                            <tr>
+                                <td><b><?php echo $row["key"]; ?></b></td>
+                                <td><?php echo $row["value"]; ?></td>
+                                <td><?php echo $row["unit"]; ?></td>
+                            </tr>
+                        <?php } ?>
+                        </tbody>
+                    </table>
                 </div>
             </div>
              <div class="row">
