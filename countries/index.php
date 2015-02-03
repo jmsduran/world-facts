@@ -16,14 +16,14 @@ $oildata = new Spreadsheet_Excel_Reader("../data/oil_production_thousands_barrel
  * $d XLS data object
  */
 function findIndex($c, $d) {
-    $x = null;
+    $x = $DATA_NOT_FOUND;
     $r = $d->rowcount(0);
 
     for ($i = 5; $i <= $r; $i++) {
         $a = strtolower($d->val($i, 'A'));
         $b = strtolower($c);
 
-        if ($a == $b) {
+        if ($a === $b) {
             $x = $i;
             break;
         }
@@ -44,7 +44,7 @@ function getValue($c, $d) {
     $i = findIndex($c, $d);
     $g = $DATA_NOT_FOUND;
 
-    if ($i != null) {
+    if ($i != $DATA_NOT_FOUND) {
         $g = $d->val($i, 'G');
     }
 
@@ -54,6 +54,13 @@ function getValue($c, $d) {
 $population = getValue($country, $popdata);
 $co2emissions = getValue($country, $co2data);
 $oilproduction = getValue($country, $oildata);
+
+// Display some images from Panoramio that are tagged under the coutry
+// name, but only if population data exists (else do not show the iframe).
+$googlemapsHTML = ($population == $DATA_NOT_FOUND) ? '' : '<iframe
+    src="https://www.google.com/maps/embed/v1/place?key=AIzaSyBbR7cMawadlPMDkcV2p6Dd9M-Pju1sjj0
+    &q=' . $country . '" frameborder="0" width="100%" height="300" scrolling="no"
+    marginwidth="0" marginheight="0"> </iframe>';
 ?>
 <!DOCTYPE html>
 <html>
@@ -71,6 +78,11 @@ $oilproduction = getValue($country, $oildata);
                     <div class="jumbotron">
                         <h1><?php echo $country; ?></h1>
                     </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4 col-md-offset-4">
+                    <?php echo $googlemapsHTML; ?>
                 </div>
             </div>
             <div class="row">
