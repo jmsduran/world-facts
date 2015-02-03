@@ -8,7 +8,9 @@ $country = $_GET["name"];
 $popdata = new Spreadsheet_Excel_Reader("../data/world_population_millions.xls");
 $co2data = new Spreadsheet_Excel_Reader("../data/co2_emissions_million_metric_tons.xls");
 $oildata = new Spreadsheet_Excel_Reader("../data/oil_production_thousands_barrels_daily.xls");
-$powdata = new Spreadsheet_Excel_Reader("../data/electricity_production_billion_kilowatt_hours.xls");
+$electricproductiondata = new Spreadsheet_Excel_Reader("../data/electricity_production_billion_kilowatt_hours.xls");
+$electricconsumptiondata = new Spreadsheet_Excel_Reader("../data/electricity_consumption_billion_kilowatt_hours.xls");
+$electriccapacitydata = new Spreadsheet_Excel_Reader("../data/electricity_capacity_million_kilowatts.xls");
 
 /**
  * Finds the row index of a given country name.
@@ -55,13 +57,17 @@ function getValue($c, $d) {
 $population = getValue($country, $popdata);
 $co2emissions = getValue($country, $co2data);
 $oilproduction = getValue($country, $oildata);
-$electricityproduction = getValue($country, $powdata);
+$electricproduction = getValue($country, $electricproductiondata);
+$electricconsumption = getValue($country, $electricconsumptiondata);
+$electriccapacity = getValue($country, $electriccapacitydata);
 
 $output = array(
     array("key" => "Population", "value" => $population, "unit" => "million"),
     array("key" => "CO2 Emissions", "value" => $co2emissions, "unit" => "million metric tons"),
     array("key" => "Oil Production", "value" => $oilproduction, "unit" => "thousand barrels per day"),
-    array("key" => "Electricity Generation", "value" => $electricityproduction, "unit" => "billion kilowatt hours")
+    array("key" => "Electricity Production", "value" => $electricproduction, "unit" => "billion kilowatt hours"),
+    array("key" => "Electricity Consumption", "value" => $electricconsumption, "unit" => "billion kilowatt hours"),
+    array("key" => "Installed Electric Capacity", "value" => $electriccapacity, "unit" => "million kilowatts")
 );
 
 // Display some images from Panoramio that are tagged under the coutry
