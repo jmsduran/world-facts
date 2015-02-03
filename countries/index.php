@@ -5,9 +5,14 @@ require_once '../excel-reader-2.21/excel-reader.php';
 $DATA_NOT_FOUND = "Not Available";
 
 $country = $_GET["name"];
+
+/**
+ * Data source files.
+ */
 $popdata = new Spreadsheet_Excel_Reader("../data/world_population_millions.xls");
 $co2data = new Spreadsheet_Excel_Reader("../data/co2_emissions_million_metric_tons.xls");
-$oildata = new Spreadsheet_Excel_Reader("../data/oil_production_thousands_barrels_daily.xls");
+$oilproductiondata = new Spreadsheet_Excel_Reader("../data/oil_production_thousands_barrels_daily.xls");
+$oilconsumptiondata = new Spreadsheet_Excel_Reader("../data/oil_consumption_thousands_barrels_daily.xls");
 $electricproductiondata = new Spreadsheet_Excel_Reader("../data/electricity_production_billion_kilowatt_hours.xls");
 $electricconsumptiondata = new Spreadsheet_Excel_Reader("../data/electricity_consumption_billion_kilowatt_hours.xls");
 $electriccapacitydata = new Spreadsheet_Excel_Reader("../data/electricity_capacity_million_kilowatts.xls");
@@ -54,24 +59,41 @@ function getValue($c, $d) {
     return $g;
 }
 
+/**
+ * Retrieves from the data source the year the metric was evaluated.
+ *
+ * $d XLS data object.
+ */
+function getDateMeasured($d) {
+    $g = $d->val(3, 'G');
+    return (!empty($g)) ? $g : $DATA_NOT_FOUND;
+}
+
+/**
+ * Raw values from the data source files.
+ */
 $population = getValue($country, $popdata);
 $co2emissions = getValue($country, $co2data);
-$oilproduction = getValue($country, $oildata);
+$oilproduction = getValue($country, $oilproductiondata);
+$oilconsumption = getValue($country, $oilconsumptiondata);
 $electricproduction = getValue($country, $electricproductiondata);
 $electricconsumption = getValue($country, $electricconsumptiondata);
 $electriccapacity = getValue($country, $electriccapacitydata);
 
+/**
+ * Formatted output to be displayed to the user.
+ */
 $output = array(
-    array("key" => "Population", "value" => $population, "unit" => "million"),
-    array("key" => "CO2 Emissions", "value" => $co2emissions, "unit" => "million metric tons"),
-    array("key" => "Oil Production", "value" => $oilproduction, "unit" => "thousand barrels per day"),
-    array("key" => "Electricity Production", "value" => $electricproduction, "unit" => "billion kilowatt hours"),
-    array("key" => "Electricity Consumption", "value" => $electricconsumption, "unit" => "billion kilowatt hours"),
-    array("key" => "Installed Electric Capacity", "value" => $electriccapacity, "unit" => "million kilowatts")
+    array("key" => "Population", "value" => $population, "unit" => "million", "date" => getDateMeasured($popdata)),
+    array("key" => "CO2 Emissions", "value" => $co2emissions, "unit" => "million metric tons", "date" => getDateMeasured($co2data)),
+    array("key" => "Oil Production", "value" => $oilproduction, "unit" => "thousand barrels per day", "date" => getDateMeasured($oilproductiondata)),
+    array("key" => "Oil Consumption", "value" => $oilconsumption, "unit" => "thousand barrels per day", "date" => getDateMeasured($oilconsumptiondata)),
+    array("key" => "Electricity Production", "value" => $electricproduction, "unit" => "billion kilowatt hours", "date" => getDateMeasured($electricproductiondata)),
+    array("key" => "Electricity Consumption", "value" => $electricconsumption, "unit" => "billion kilowatt hours", "date" => getDateMeasured($electricconsumptiondata)),
+    array("key" => "Installed Electric Capacity", "value" => $electriccapacity, "unit" => "million kilowatts", "date" => getDateMeasured($electriccapacitydata))
 );
 
-// Display some images from Panoramio that are tagged under the coutry
-// name, but only if population data exists (else do not show the iframe).
+// Display an embedded Google Maps frame of the country.
 $googlemapsHTML = '<iframe src="https://www.google.com/maps/embed/v1/place?key=AIzaSyBbR7cMawadlPMDkcV2p6Dd9M-Pju1sjj0
     &q=' . $country . '" frameborder="0" width="100%" height="500" scrolling="no"
     marginwidth="0" marginheight="0"> </iframe>';
@@ -112,6 +134,7 @@ $googlemapsHTML = '<iframe src="https://www.google.com/maps/embed/v1/place?key=A
                                 <th>Metric</th>
                                 <th>Value</th>
                                 <th>Unit</th>
+                                <th>Year Measured</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -120,6 +143,7 @@ $googlemapsHTML = '<iframe src="https://www.google.com/maps/embed/v1/place?key=A
                                 <td><b><?php echo $row["key"]; ?></b></td>
                                 <td><?php echo $row["value"]; ?></td>
                                 <td><?php echo $row["unit"]; ?></td>
+                                <td><?php echo $row["date"]; ?></td>
                             </tr>
                         <?php } ?>
                         </tbody>
