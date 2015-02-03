@@ -8,6 +8,7 @@ $country = $_GET["name"];
 $popdata = new Spreadsheet_Excel_Reader("../data/world_population_millions.xls");
 $co2data = new Spreadsheet_Excel_Reader("../data/co2_emissions_million_metric_tons.xls");
 $oildata = new Spreadsheet_Excel_Reader("../data/oil_production_thousands_barrels_daily.xls");
+$powdata = new Spreadsheet_Excel_Reader("../data/electricity_production_billion_kilowatt_hours.xls");
 
 /**
  * Finds the row index of a given country name.
@@ -54,18 +55,19 @@ function getValue($c, $d) {
 $population = getValue($country, $popdata);
 $co2emissions = getValue($country, $co2data);
 $oilproduction = getValue($country, $oildata);
+$electricityproduction = getValue($country, $powdata);
 
 $output = array(
     array("key" => "Population", "value" => $population, "unit" => "million"),
     array("key" => "CO2 Emissions", "value" => $co2emissions, "unit" => "million metric tons"),
-    array("key" => "Oil Production", "value" => $oilproduction, "unit" => "thousand barrels per day")
+    array("key" => "Oil Production", "value" => $oilproduction, "unit" => "thousand barrels per day"),
+    array("key" => "Electricity Generation", "value" => $electricityproduction, "unit" => "billion kilowatt hours")
 );
 
 // Display some images from Panoramio that are tagged under the coutry
 // name, but only if population data exists (else do not show the iframe).
-$googlemapsHTML = ($population == $DATA_NOT_FOUND) ? '' : '<iframe
-    src="https://www.google.com/maps/embed/v1/place?key=AIzaSyBbR7cMawadlPMDkcV2p6Dd9M-Pju1sjj0
-    &q=' . $country . '" frameborder="0" width="100%" height="300" scrolling="no"
+$googlemapsHTML = '<iframe src="https://www.google.com/maps/embed/v1/place?key=AIzaSyBbR7cMawadlPMDkcV2p6Dd9M-Pju1sjj0
+    &q=' . $country . '" frameborder="0" width="100%" height="500" scrolling="no"
     marginwidth="0" marginheight="0"> </iframe>';
 ?>
 <!DOCTYPE html>
@@ -80,23 +82,23 @@ $googlemapsHTML = ($population == $DATA_NOT_FOUND) ? '' : '<iframe
     <body>
         <div class="container-fluid">
             <div class="row">
-                <div class="col-md-4 col-md-offset-4">
-                    <div class="jumbotron">
+                <div class="col-md-6 col-md-offset-3">
+                    <div class="page-header">
                         <h1><?php echo $country; ?></h1>
                     </div>
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-4 col-md-offset-4">
+                <div class="col-md-6 col-md-offset-3">
                     <?php echo $googlemapsHTML; ?>
                 </div>
             </div>
              <div class="row">
-                <div class="col-md-4 col-md-offset-4">
+                <div class="col-md-6 col-md-offset-3">
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-4 col-md-offset-4">
+                <div class="col-md-6 col-md-offset-3">
                     <h2>Facts:</h2>
                     <table class="table">
                         <thead>
@@ -119,7 +121,7 @@ $googlemapsHTML = ($population == $DATA_NOT_FOUND) ? '' : '<iframe
                 </div>
             </div>
              <div class="row">
-                <div class="col-md-4 col-md-offset-4">
+                <div class="col-md-6 col-md-offset-3">
                 </div>
             </div>
         </div>
